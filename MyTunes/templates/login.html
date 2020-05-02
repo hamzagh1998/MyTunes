@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 offset-md-3 col-lg-6 offset-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <legend class="text-secondary">Login page</legend>
+                        <hr>
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <input class="btn btn-primary" type="submit" value="Log In">
+                        </form>
+                        <br>
+                        <fieldset>
+                            Don't have an account?
+                            <a class="btn btn-outline-success" href="{% url 'music:register' %}">Register</a>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+{% endblock  %}
+    

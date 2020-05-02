@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <main>
+      <div class="mt-2 ml-3 mr-3">
+        <h2 class="text-center text-secondary">{{ request.user.username|capfirst }} album{{ albums.count|pluralize }}</h2>
+        <hr>
+        <div class="row">
+          {% if albums %}
+          <h3 class="text-secondary ml-2">Filter</h3>
+          <div class="col-md-6 offset-md-3 mt-1 mb-1">
+            <form class="form-group"  method="post">
+              {% csrf_token %}
+              <select class="form-control" name="favorite">
+                <option value="False">All</option>
+                <option value="True">My favorite</option>
+              </select>
+              <input class="btn btn-success btn-sm" type="submit" value="Apply">
+            </form>
+          </div>
+            {% for album in albums %}
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                <div class="card">
+                  {% if album.image.url %}
+                    <img src="{{ album.image.url }}" alt="album_thumbnail" height="260px">
+                  {% endif %}
+                  <div class="card-body">
+                    <h3><a href="{% url 'music:album_detail' album.slug %}">{{ album.title|capfirst }}</a></h3>
+                    <h4 class="text-secondary">{{ album.artist|capfirst }}</h4>
+                    {% if album.genre %}
+                        <p class="text-secondary m-0">Genre: {{ album.genre|capfirst }}</p>
+                    {% endif %}
+                    {% if album.discription %}
+                      <p class="text-secondary m-0">{{ album.summary }}</p>
+                    {% endif %}
+                    <p class="text-secondary m-0">
+                      <a class="btn btn-primary btn-sm" href="{% url 'music:album_detail' album.slug %}">View Songs</a>
+                      {% if request.user == album.user %}
+                        <a class="btn btn-warning btn-sm" href="{% url 'music:update_album' album.slug %}">Update</a>
+                        <a class="btn btn-danger btn-sm" href="{% url 'music:delete_album' album.id %}">Delete</a>
+                      {% endif %}
+                      {% if request.user.is_authenticated and request.user == album.user %}
+                        {% if album.is_favorite %}
+                          <a class="btn btn-outline-secondary btn-sm" href="{% url 'music:favorite_album' album.slug %}">unfavorite</a>
+                        {% else %}
+                          <a class="btn btn-outline-success btn-sm" href="{% url 'music:favorite_album' album.slug %}">favorite</a>
+                        {% endif %}
+                      {% endif %}
+                      <br>
+                    {{ album.date_created|timesince }} ago by {{ album.user.username }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+        </div>
+      </div>
+    </main>
+{% endblock  %}

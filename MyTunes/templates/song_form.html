@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+  <main>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-3 col-sm-3 col-md-4 col-lg-4 mt-2">
+          <div class="card">
+            {% if album.image.url %}
+              <img src="{{ album.image.url }}" alt="" height="270px">
+            {% endif %}
+            <div class="card-body">
+              <h2>{{ album.title }}</h2>
+              <h3>{{ album.artist }}</h3>
+              <p class="text-secondary">{{ album.genre }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-9 col-sm-9 col-md-8 col-lg-8 mt-2">
+          <div class="card">
+            <div class="card-body">
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <input class="btn btn-success" type="submit" value="Save">
+                <a href="{% url 'music:album_detail' album.slug %}">Return</a>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+{% endblock %}

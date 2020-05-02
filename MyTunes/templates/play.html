@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-3">
+      <div class="card">
+        <h3 class="text-secondary ml-2">{{ song.title }}</h3>
+        <div class="card-body text-center">
+          <td><audio src="{{ song.song_file.url }}" controls>
+            Error: your web browser does not support this audio player.
+          </audio></td>
+        </div>
+        <a class="btn btn-success" href="{{ song.song_file.url }}">Download</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

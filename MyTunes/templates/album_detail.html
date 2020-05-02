@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <main>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-3 col-sm-3 col-md-4 col-lg-4">
+          <div class="card mt-2">
+            {% if album.image.url %}
+              <img src="{{ album.image.url }}" alt="" height="270px">
+            {% endif %}
+            <h2>{{ album.title }}</h2>
+            <h3>{{ album.artist }}</h3>
+            <p class="text-secondary">{{ album.genre }}</p>
+          </div>
+        </div>
+        <div class="col-xs-9 col-sm-9 col-md-8 col-lg-8">
+          <div class="card mt-2">
+            <div class="card-body">
+              <div class="row">
+                {% if request.user.is_authenticated %}
+                  <div class="col-md-6">
+                    <form class="form-group"  method="post">
+                      {% csrf_token %}
+                      <select class="form-control" name="favorite">
+                        <option value="False">All</option>
+                        <option value="True">My favorite</option>
+                      </select>
+                      <input class="btn btn-success btn-sm" type="submit" value="Apply">
+                    </form>
+                  </div>
+                  <div class="col-md-6">
+                    <a href="{% url 'music:add_new_song' id=album.id %}">Add new song</a>
+                  </div>
+                {% endif %}
+                </div>
+              {% if songs %}
+                <table class="table table-dark">
+                  <thead>
+                    <tr>
+                      <th scope="col">Title</th>
+                      <th scope="col">Audio file</th>
+                      {% if request.user.is_authenticated and request.user == album.user %}
+                        <th scope="col">Add to favorite</th>
+                        <th scope="col">update</th>
+                        <th scope="col">delete</th>
+                      {% endif %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for song in songs %}
+                      <tr>
+                        <td>{{ song.title }}</td>
+                        {% if song.song_file.url %}
+                          <td><a class="btn btn-success" href="{% url 'music:play' song.id %}">Play</a></td>
+                        {% endif %}
+                        {% if request.user.is_authenticated %}
+                          {% if request.user == album.user %}
+                            {% if song.is_favorite %}
+                              <td><a class="btn btn-outline-secondary btn-sm" href="{% url 'music:favorite_song' song.id %}">Unadd</a></td>
+                            {% else %}
+                              <td><a class="btn btn-outline-info btn-sm" href="{% url 'music:favorite_song' song.id %}">Add</a></td>
+                            {% endif %}
+                            <td><a class="btn btn-outline-warning btn-sm" href="{% url 'music:song_detail' song.id %}">Update</a></td>
+                            <td><a class="btn btn-outline-danger btn-sm" href="{% url 'music:delete_song' song.id %}">Delete</a></td>
+                          </tr>
+                          {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                  </tbody>
+                </table>
+              {% endif %}
+            </div>
+          </div>
+          {% if album.discription %}
+            <div class="card mt-1">
+              <div class="car-bdoy m-2">
+                <h2>discription:</h2>
+                <p class="text-secondary">{{ album.discription }}</p>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+{% endblock %}

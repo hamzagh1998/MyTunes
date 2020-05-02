@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+                <div class="card">
+                    <div class="card-body">
+                        <legend class="text-secondary">Adding new album</legend>
+                        <hr>
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <input class="btn btn-primary" type="submit" value="save">
+                            <a class="btn btn-outline-secondary" href="{% url 'index' %}">Return</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+              <div class="card">
+                <div class="card-body">
+                  <h3>What is MyTunes?</h3>
+                  <p class="text-secondary pl-2">
+                    MyTunes it's an app that allows you to upload and store your music on the cloud all for free!
+                  </p>
+                  <h3>How to add a music?</h3>
+                  <p class="text-secondary pl-2">
+                    In order to add a music on MyTunes you need first to create an album out of the form in this page, And then once the album created you can upload your music
+                  </p>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+{% endblock  %}

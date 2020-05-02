@@ -1,0 +1,32 @@
+{% load static %}
+
+{% block content %}
+
+  <div class="jumbotron">
+    <div class="row">
+      <div class="col-xs-6 col-sm-6 col-md-6 text-right">
+        <img src="{% static 'img/tune.jpg' %}" alt="" height="200px" width="200px">
+      </div>
+      <div class="col-xs-6 col-sm-6 col-md-6 text-left">
+        <h1>My Tunes</h1>
+        <h3 class="text-secondary">Cloud music player</h3>
+      </div>
+      <div class="container mt-2">
+        <p class="text-secondary text-center">
+          MyTunes is an application that let's you upload, store, and play all of your music from the cloud.
+          You can now manage and listen to your music from any device, anywhere in the world.
+        </p>
+        {% if request.user.is_authenticated %}
+        <div class="container text-center">
+            <a class="btn btn-primary" href="{% url 'music:add_new_album' %}">Add new album</a>
+          {% else %}
+          <p class="text-center">
+            <a class="btn btn-primary" href="{% url 'music:login' %}">Add new album</a>
+          </p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
