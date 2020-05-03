@@ -10,12 +10,10 @@ def index(request):
     albums = Album.objects.all()
     if request.POST:
         if request.POST.get('favorite') == "True":
-            print(request.POST.get('favorite'), request.user.id)
             albums = Album.objects.filter(is_favorite=request.POST.get('favorite'), user=request.user.id)
 
     # Search
     if request.GET:
-        print(getQuerySet(request.GET.get('user_search', '')))
         albums = getQuerySet(request.GET.get('user_search', ''))
         return render(request, 'index.html', {'albums':albums})
 
